@@ -1,4 +1,5 @@
-import 'babel-polyfill';
+// import 'babel/polyfill';
+import 'regenerator-runtime/runtime';
 import express from 'express';
 import proxy from 'express-http-proxy';
 

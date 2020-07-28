@@ -18,8 +18,18 @@ const config = {
      path: path.resolve(__dirname, 'build') 
  },
 
- externals: [webpackNodeExternals()]
+ externals: [webpackNodeExternals()],
+
+ module: {
+    rules: [
+      {
+        test: /\.js?$/,
+        loader: 'babel-loader',
+        exclude: /node_modules/,
+      }
+    ]
+  }
 }
 
 
-module.exports = merge(baseConfig, config);
+module.exports = config;

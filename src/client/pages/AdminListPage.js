@@ -1,35 +1,33 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { fetchAdmins } from '../actions';
 import requireAuth from '../components/hocs/requireAuth';
 
-class AdminsListPage extends Component {
-  componentDidMount() {
-    this.props.fetchAdmins();
-  }
+function AdminsListPage() {
 
-  renderAdmins() {
-    return this.props.admins.map(admin => {
-      return <li key={admin.id}>{admin.name}</li>;
-    });
-  }
+  const dispatch = useDispatch();
 
-  render() {
-    return (
-      <div>
-        <h3>Protected list of admins</h3>
-        <ul>{this.renderAdmins()}</ul>
-      </div>
-    );
-  }
+  React.useEffect(()=>{
+    dispatch(fetchAdmins());
+  },[]);
+
+  return (
+    <div>
+      <h3>Protected list of admins</h3>
+      <ul>
+        {
+          this.props.admins.map(admin => {
+            return <li key={admin.id}>{admin.name}</li>;
+          })
+        }
+        </ul>
+    </div>
+  );
+
 }
 
-function mapStateToProps({ admins }) {
-    return { admins };
-}
 
-
-export default{
-    loadData: ({ dispatch }) => dispatch(fetchAdmins()),
-    component: connect(mapStateToProps, { fetchAdmins })(requireAuth(AdminsListPage))
+export default {
+  loadData: ({ dispatch }) => dispatch(fetchAdmins()),
+  component: (requireAuth(AdminsListPage))
 };
