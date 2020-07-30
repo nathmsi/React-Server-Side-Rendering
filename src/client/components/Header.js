@@ -1,40 +1,65 @@
 import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import { Button } from '@material-ui/core';
+
+
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
 
-import {
-  useSelector
-} from 'react-redux';
+import { useSelector } from 'react-redux';
 
-const Header = () => {
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  menuButton: {
+    color: '#fff'
+  },
+  title: {
+    flexGrow: 1,
+    color: '#fff'
+  },
+}));
+
+
+function Headers() {
+  const classes = useStyles();
 
   const auth = useSelector(state => state.auth)
 
-  const authButton = auth ? (
-    <a href="/api/logout">Logout</a>
-  ) : (
-    <a href="/api/auth/google">Login</a>
-  );
 
   return (
-    <nav>
-      <div className="nav-wrapper">
-        <Link to="/" className="brand-logo" >
-          React SSR
-        </Link>
-        <ul className="right">
-          <li>
-            <Link to="/users">Users</Link>
-          </li>
-          <li>
-            <Link to="/admins">Admins</Link>
-          </li>
-          <li>{authButton}</li>
-        </ul>
-      </div>
-    </nav>
+    <div className={classes.root}>
+      <AppBar position="static" color="primary">
+        <Toolbar>
+          <Typography component={Link} to="/" variant="h6" className={classes.title}>
+            React SSR
+          </Typography>
+
+          <Button component={Link} to="/users" className={classes.menuButton}>
+            Users
+        </Button>
+          <Button component={Link} to="/admins" className={classes.menuButton}>
+            Admins
+        </Button>
+
+          {
+            auth ?
+              <Button href="/api/logout" className={classes.menuButton}>Logout</Button>
+              :
+              <Button href="/api/auth/google" className={classes.menuButton}>Login </Button>
+          }
+
+
+
+        </Toolbar>
+      </AppBar>
+    </div>
   );
-};
+}
 
 
-export default Header;
+export default Headers;
