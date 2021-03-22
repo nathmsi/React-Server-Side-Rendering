@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import Axios from 'axios';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -21,6 +22,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const config = {
+  headers: { Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5hdGhhbkBnbWFpbC5jb20iLCJpYXQiOjE2MTY0NDc1NjR9.E3DITiPkKmt5_v6J0Y8EdTI3Fg9K0WzJRexme58Yas8` }
+};
+
 
 function UsersList() {
   const classes = useStyles();
@@ -30,6 +35,11 @@ function UsersList() {
 
   React.useEffect(() => {
     dispatch(fetchUsers());
+    Axios.get('api/candidates',config).then(
+      (result) => {
+        console.log(result);
+      }
+    )
   }, []);
 
   return (
