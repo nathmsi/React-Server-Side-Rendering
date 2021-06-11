@@ -1,45 +1,59 @@
-import renderer from '../../helpers/renderer';
-import creactStore from '../../helpers/createStore';
+import React from 'react';
+import { createStore } from 'redux';
+import reducers from '../../client/reducers';
+import { renderToString } from 'react-dom/server';
+import { StaticRouter } from 'react-router-dom';
+import { renderRoutes } from 'react-router-config'
+import { Provider } from 'react-redux';
+import serialize from 'serialize-javascript';
+import Routes from '../../client/Routes'
 
-import { matchRoutes } from 'react-router-config';
-import Routes from '../../client/Routes';
+import { Helmet } from 'react-helmet';
 
 const express = require('express');
 const renderRouter = express.Router();
 
 renderRouter.use(express.static('public'));
 
+const renderer = (req, store, context) => {
+  const content = renderToString(
+      <Provider store={store}>
+          <StaticRouter location={req.path} context={context}>
+              <div>{renderRoutes(Routes)}</div>
+          </StaticRouter>
+      </Provider>
+  );
+
+  const helmet = Helmet.renderStatic();
+
+  return `
+  <html>
+      <head>
+          ${helmet.title.toString()}
+          ${helmet.meta.toString()}
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+      </head>
+      <body>
+          <div id="root">${content}</div>
+          <script>
+              window.INITIAL_STATE=${serialize((store.getState()))}
+          </script>
+          <script src="bundle.js"> </script>
+      </body>
+  </html>
+  `;
+}
 
 renderRouter.get('*', (req, res) => {
-    const store = creactStore(req);
+    const store = createStore(
+      reducers,
+      {}
+    );
   
-    // some logic to initialize and load into the store
-    const promises = matchRoutes(Routes, req.path)
-      .map(({ route }) => {
-        return route.loadData ? route.loadData(store) : null;
-      })
-      .map(promise => {
-        if (promise) {
-          return new Promise((resolve, reject) => {
-            promise.then(resolve).catch(resolve);
-          });
-        }
-      });
+    const context = {};
+    const content = renderer(req, store, context);
   
-    Promise.all(promises).then(() => {
-      const context = {};
-      const content = renderer(req, store, context);
-  
-      if (context.url) {
-        return res.redirect(301, context.url);
-      }
-      if (context.notFound) {
-        res.status(404);
-      }
-  
-      res.send(content);
-    });
-  
+    res.send(content);
   });
 
 export default renderRouter;

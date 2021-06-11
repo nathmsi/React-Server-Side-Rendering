@@ -34,3 +34,29 @@ export const fetchAdmins = () => async (dispatch, getState, api) => {
   });
 
 };
+
+
+export const FETCH_USERS_LOGIN = 'login_users_login';
+export const fetchUsersLogin = () => async (dispatch,getState, api) => {
+  console.log('hihihi')
+  api.post('api-v1/auth/signin',{
+    "firstName": "nathan",
+    "password": "123456",
+    "email": "nathan@gmail.com"
+  }).then((result)=> {
+    dispatch({
+      type: FETCH_USERS_LOGIN,
+      payload: {
+        token: result.data
+      }
+  })
+  })
+  .catch((error)=> {
+    dispatch({
+      type: FETCH_USERS_LOGIN,
+      payload: {
+        error
+      }
+  })
+  })
+}

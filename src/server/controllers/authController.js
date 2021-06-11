@@ -1,8 +1,8 @@
-// const admin = require('firebase-admin');
+// import admin from'firebase-admin');
 
-const db = require("../db/database");
-var bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+import db from "../db/database";
+import bcrypt from'bcryptjs';
+import jwt from'jsonwebtoken';
 const SECRET_KEY = 'some key'; // process.env.SECRET_KEY
 
 
@@ -11,7 +11,7 @@ function validateEmail(email){
     return re.test(email);
 };
 
-module.exports.signup = function (req, res) {
+export const signup = (req, res) => {
     try {
         const {
             password,
@@ -63,7 +63,7 @@ module.exports.signup = function (req, res) {
 
 
 
-module.exports.signin = function (req, res) {
+export const signin = function (req, res) {
     try {
         
         const {
@@ -82,7 +82,8 @@ module.exports.signin = function (req, res) {
             if (err) {
                 res.status(200).json({
                     success: false,
-                    message: `Error was found`
+                    message: `Error was found`,
+                    errorMessage: err
                 });
             } else if (row) {
                 bcrypt.compare(password, row.password, function (err, result) {  // compare hashed password from db with the password
@@ -111,9 +112,11 @@ module.exports.signin = function (req, res) {
 
 
     } catch (error) {
-        res.status(200).json({
+        console.log(error);
+        res.status(401).json({
             success: false,
-            message: `Error was found`
+            message: `Error was found`,
+            errorMessage: error.errorMessage
         });
     }
 };

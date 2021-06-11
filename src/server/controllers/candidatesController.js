@@ -1,7 +1,7 @@
-const db = require("../db/database");
+import db  from "../db/database";
 
 
-module.exports.getlistCandidates = function (req, res) {
+export const getlistCandidates =  (req, res) => {
     try {
         db.all( `SELECT * FROM candidate` , [], (err, rows) => { // get from table candidate 
             if (err) {

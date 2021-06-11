@@ -13,16 +13,18 @@ import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 
 import reducers from './reducers';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 
 const axiosInstance = axios.create({
     baseURL: 'api/'
 })
 
+ 
 const store = createStore(
     reducers,
     window.INITIAL_STATE,
-    applyMiddleware(thunk.withExtraArgument(axiosInstance))
+    composeWithDevTools(applyMiddleware(thunk.withExtraArgument(axiosInstance)))
 );
 
 

@@ -1,9 +1,11 @@
-const express = require('express');
+import express from 'express';
+
+
 const candidateRouter = express.Router();
 
-const candidatesController = require('../controllers/candidatesController');
+import * as candidatesController  from '../controllers/candidatesController';
 
-const requireAuth = require('../middlewares/requireAuth');
+import requireAuth  from '../middlewares/requireAuth';
 
 
 
@@ -12,4 +14,4 @@ candidateRouter.get('/', requireAuth , candidatesController.getlistCandidates); 
 
 
 
-module.exports = candidateRouter;
+export default candidateRouter;

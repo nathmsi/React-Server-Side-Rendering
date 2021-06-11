@@ -25,6 +25,8 @@ const useStyles = makeStyles((theme) => ({
 
 
 
+
+
 function UsersList() {
   const classes = useStyles();
 
@@ -33,11 +35,7 @@ function UsersList() {
 
   React.useEffect(() => {
     dispatch(fetchUsers());
-    Axios.get('api/candidates').then(
-      (result) => {
-        console.log(result);
-      }
-    )
+    
   }, []);
 
   return (
@@ -48,15 +46,6 @@ function UsersList() {
       </Helmet>
         Here's a big list of users:
       <List >
-        {
-          users.map(user => {
-            return (
-              <ListItem key={user.id}>
-                <ListItemText primary={user.name} secondary={user.id} />
-              </ListItem>
-            )
-          })
-        }
       </List>
     </div>
   );

@@ -3,10 +3,10 @@ import 'regenerator-runtime/runtime';
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-
 import RenderRouter from './middlewares/render';
 
 import db from './db/database'; // load db
+
 
 import api from './server';
 
@@ -15,11 +15,10 @@ main.use(bodyParser.urlencoded({ extended: false }));
 main.use(bodyParser.json());
 main.use(cors({ origin: true }));
 
-main.post('/users', (req,res) => res.send(req.body));
+// main.post('/users', (req,res) => res.send(req.body));
 
 
-
-main.use('/api',api); // api request
+main.use('/api-v1',api); // api request
 
 main.use('/',RenderRouter); // render page html
 

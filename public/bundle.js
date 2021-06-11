@@ -105,8 +105,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var redux_thunk__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(558);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(522);
 /* harmony import */ var _reducers__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(559);
+/* harmony import */ var redux_devtools_extension__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(563);
+/* harmony import */ var redux_devtools_extension__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(redux_devtools_extension__WEBPACK_IMPORTED_MODULE_11__);
 // Startup point for the client side application
 // import 'babel/polyfill';
+
 
 
 
@@ -121,7 +124,7 @@ __webpack_require__.r(__webpack_exports__);
 var axiosInstance = axios__WEBPACK_IMPORTED_MODULE_5___default.a.create({
   baseURL: 'api/'
 });
-var store = Object(redux__WEBPACK_IMPORTED_MODULE_7__["createStore"])(_reducers__WEBPACK_IMPORTED_MODULE_10__["default"], window.INITIAL_STATE, Object(redux__WEBPACK_IMPORTED_MODULE_7__["applyMiddleware"])(redux_thunk__WEBPACK_IMPORTED_MODULE_8__["default"].withExtraArgument(axiosInstance)));
+var store = Object(redux__WEBPACK_IMPORTED_MODULE_7__["createStore"])(_reducers__WEBPACK_IMPORTED_MODULE_10__["default"], window.INITIAL_STATE, Object(redux_devtools_extension__WEBPACK_IMPORTED_MODULE_11__["composeWithDevTools"])(Object(redux__WEBPACK_IMPORTED_MODULE_7__["applyMiddleware"])(redux_thunk__WEBPACK_IMPORTED_MODULE_8__["default"].withExtraArgument(axiosInstance))));
 react_dom__WEBPACK_IMPORTED_MODULE_2___default.a.hydrate( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_redux__WEBPACK_IMPORTED_MODULE_9__["Provider"], {
   store: store
 }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["BrowserRouter"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, Object(react_router_config__WEBPACK_IMPORTED_MODULE_4__["renderRoutes"])(_Routes__WEBPACK_IMPORTED_MODULE_6__["default"])))), document.querySelector('#root'));
@@ -84725,6 +84728,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchCurrentUser", function() { return fetchCurrentUser; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FETCH_ADMINS", function() { return FETCH_ADMINS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchAdmins", function() { return fetchAdmins; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FETCH_USERS_LOGIN", function() { return FETCH_USERS_LOGIN; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchUsersLogin", function() { return fetchUsersLogin; });
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -84826,6 +84831,48 @@ var fetchAdmins = function fetchAdmins() {
     };
   }();
 };
+var FETCH_USERS_LOGIN = 'login_users_login';
+var fetchUsersLogin = function fetchUsersLogin() {
+  return /*#__PURE__*/function () {
+    var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(dispatch, getState, api) {
+      return regeneratorRuntime.wrap(function _callee4$(_context4) {
+        while (1) {
+          switch (_context4.prev = _context4.next) {
+            case 0:
+              console.log('hihihi');
+              api.post('api-v1/auth/signin', {
+                "firstName": "nathan",
+                "password": "123456",
+                "email": "nathan@gmail.com"
+              }).then(function (result) {
+                dispatch({
+                  type: FETCH_USERS_LOGIN,
+                  payload: {
+                    token: result.data
+                  }
+                });
+              })["catch"](function (error) {
+                dispatch({
+                  type: FETCH_USERS_LOGIN,
+                  payload: {
+                    error: error
+                  }
+                });
+              });
+
+            case 2:
+            case "end":
+              return _context4.stop();
+          }
+        }
+      }, _callee4);
+    }));
+
+    return function (_x10, _x11, _x12) {
+      return _ref4.apply(this, arguments);
+    };
+  }();
+};
 
 /***/ }),
 /* 550 */
@@ -84833,17 +84880,54 @@ var fetchAdmins = function fetchAdmins() {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(33);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(549);
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(522);
 
+
+
+
+var login = new Promise(function (resolve, reject) {
+  return axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('api-v1/auth/signin', {
+    "firstName": "nathan",
+    "password": "123456",
+    "email": "nathan@gmail.com"
+  }).then(function (reuslt) {
+    return resolve(reuslt.data);
+  })["catch"](function (error) {
+    return reject(error);
+  });
+});
+
+var config = function config(token) {
+  return {
+    headers: {
+      Authorization: "Bearer ".concat(token)
+    }
+  };
+};
 
 var Home = function Home() {
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  var dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_3__["useDispatch"])();
+  Object(react__WEBPACK_IMPORTED_MODULE_1__["useState"])(function () {
+    console.log('hi');
+    Object(_actions__WEBPACK_IMPORTED_MODULE_2__["fetchUsersLogin"])(dispatch);
+    login.then(function (_ref) {
+      var token = _ref.token;
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('api-v1/candidates', config(token)).then(function (result) {
+        console.log(result);
+      });
+    });
+  }, []);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     className: "center-align",
     style: {
       marginTop: '200px'
     }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Welcome"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Check out these awesome features"));
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h3", null, "Welcome"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("p", null, "Check out these awesome features"));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -84888,11 +84972,6 @@ var useStyles = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_4__["ma
     }
   };
 });
-var config = {
-  headers: {
-    Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5hdGhhbkBnbWFpbC5jb20iLCJpYXQiOjE2MTY0NDc1NjR9.E3DITiPkKmt5_v6J0Y8EdTI3Fg9K0WzJRexme58Yas8"
-  }
-};
 
 function UsersList() {
   var classes = useStyles();
@@ -84902,23 +84981,13 @@ function UsersList() {
   var dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["useDispatch"])();
   react__WEBPACK_IMPORTED_MODULE_0___default.a.useEffect(function () {
     dispatch(Object(_actions__WEBPACK_IMPORTED_MODULE_2__["fetchUsers"])());
-    axios__WEBPACK_IMPORTED_MODULE_8___default.a.get('api/candidates', config).then(function (result) {
-      console.log(result);
-    });
   }, []);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: classes.root
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_helmet__WEBPACK_IMPORTED_MODULE_3__["Helmet"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("title", null, "".concat(users.length, " Users Loaded")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("meta", {
     property: "og:title",
     content: "Users App"
-  })), "Here's a big list of users:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_List__WEBPACK_IMPORTED_MODULE_5__["default"], null, users.map(function (user) {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItem__WEBPACK_IMPORTED_MODULE_6__["default"], {
-      key: user.id
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_ListItemText__WEBPACK_IMPORTED_MODULE_7__["default"], {
-      primary: user.name,
-      secondary: user.id
-    }));
-  })));
+  })), "Here's a big list of users:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_List__WEBPACK_IMPORTED_MODULE_5__["default"], null));
 }
 
 function loadData(store) {
@@ -86337,6 +86406,12 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(549);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 /* harmony default export */ __webpack_exports__["default"] = (function () {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
@@ -86345,6 +86420,11 @@ __webpack_require__.r(__webpack_exports__);
   switch (action.type) {
     case _actions__WEBPACK_IMPORTED_MODULE_0__["FETCH_CURRENT_USER"]:
       return action.payload.data || false;
+
+    case _actions__WEBPACK_IMPORTED_MODULE_0__["FETCH_USERS_LOGIN"]:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        token: action.payload
+      });
 
     default:
       return state;
@@ -86371,6 +86451,35 @@ __webpack_require__.r(__webpack_exports__);
       return state;
   }
 });
+
+/***/ }),
+/* 563 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var compose = __webpack_require__(532).compose;
+
+exports.__esModule = true;
+exports.composeWithDevTools =
+  typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    : function () {
+        if (arguments.length === 0) return undefined;
+        if (typeof arguments[0] === 'object') return compose;
+        return compose.apply(null, arguments);
+      };
+
+exports.devToolsEnhancer =
+  typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__
+    ? window.__REDUX_DEVTOOLS_EXTENSION__
+    : function () {
+        return function (noop) {
+          return noop;
+        };
+      };
+
 
 /***/ })
 /******/ ]);

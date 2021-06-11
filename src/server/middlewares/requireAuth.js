@@ -1,9 +1,9 @@
-const jwt = require('jsonwebtoken');
-const db = require("../db/database");
+import jwt from 'jsonwebtoken';
+import db from "../db/database";
 
 const SECRET_KEY = 'some key'; // process.env.SECRET_KEY
 
-module.exports = function (req, res, next) {  // verify header bearer token 
+function requireAuth (req, res, next) {  
     try {
         if (req.headers) {
             const { authorization } = req.headers;
@@ -56,3 +56,6 @@ module.exports = function (req, res, next) {  // verify header bearer token
         });
     }
 }
+
+
+export default requireAuth;
